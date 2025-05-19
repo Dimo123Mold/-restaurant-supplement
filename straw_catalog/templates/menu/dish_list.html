@@ -1,0 +1,31 @@
+<h2>Категорії:</h2>
+<ul>
+    <li><a href="{% url 'dish_list' %}">Усі</a></li>
+    {% for category in categories %}
+        <li>
+            <a href="{% url 'dish_by_category' category.id %}">
+                {% if selected_category and selected_category.id == category.id %}
+                    <strong>{{ category.name }}</strong>
+                {% else %}
+                    {{ category.name }}
+                {% endif %}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h2>Страви:</h2>
+<ul>
+    {% for dish in dishes %}
+        <li>
+            <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a> — {{ dish.price }} грн
+            <p>{{ dish.description }}</p>
+            <p>Наявність: {% if dish.available %}✅{% else %}❌{% endif %}</p>
+            {% if dish.image %}
+                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="150">
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

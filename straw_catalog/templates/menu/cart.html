@@ -1,0 +1,29 @@
+<h2>Ваш кошик</h2>
+
+{% if cart.items.all %}
+    <ul>
+    {% for item in cart.items.all %}
+        <li>
+            {{ item.dish.name }} — {{ item.quantity }} x {{ item.dish.price }} грн =
+            {{ item.total_price }} грн
+
+            <form method="post" action="{% url 'update_quantity' item.id %}">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                <button type="submit">Оновити</button>
+            </form>
+
+            <form method="post" action="{% url 'remove_from_cart' item.id %}">
+                {% csrf_token %}
+                <button type="submit">Видалити</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h3>Загальна сума: {{ cart.total_price }} грн</h3>
+{% else %}
+    <p>Кошик порожній.</p>
+{% endif %}
+
+<a href="{% url 'dish_list' %}">Назад до каталогу</a>

@@ -1,0 +1,13 @@
+<h1>{{ dish.name }}</h1>
+<p>{{ dish.description }}</p>
+<p><strong>Інгредієнти:</strong> {{ dish.ingredients }}</p>
+<p><strong>Ціна:</strong> {{ dish.price }} грн</p>
+{% if dish.photo %}
+    <img src="{{ dish.photo.url }}" alt="{{ dish.name }}" width="300">
+{% endif %}
+<p><strong>Наявність:</strong> {{ dish.available|yesno:"Є,Немає" }}</p>
+<a href="{% url 'dish_list' %}">Назад до каталогу</a>
+<form method="post" action="{% url 'add_to_cart' dish.id %}">
+    {% csrf_token %}
+    <button type="submit">Додати до кошика</button>
+</form>
