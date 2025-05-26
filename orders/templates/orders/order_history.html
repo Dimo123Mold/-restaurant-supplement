@@ -1,0 +1,17 @@
+<h2>Історія замовлень</h2>
+{% for order in orders %}
+    <div>
+        <strong>Замовлення №{{ order.id }}</strong> — {{ order.created_at }}
+        <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.dish.name }} — {{ item.quantity }} шт. ({{ item.total_price }} грн)</li>
+        {% endfor %}
+        </ul>
+        <form method="post" action="{% url 'orders:repeat_order' order.id %}">
+            {% csrf_token %}
+            <button type="submit">Повторити замовлення</button>
+        </form>
+    </div>
+{% empty %}
+    <p>Немає попередніх замовлень.</p>
+{% endfor %}

@@ -22,8 +22,9 @@
     </ul>
 
     <h3>Загальна сума: {{ cart.total_price }} грн</h3>
+
 {% else %}
     <p>Кошик порожній.</p>
 {% endif %}
-
+<a href="{% url 'checkout' %}" class="btn btn-success">Перейти до оплати</a>
 <a href="{% url 'dish_list' %}">Назад до каталогу</a>

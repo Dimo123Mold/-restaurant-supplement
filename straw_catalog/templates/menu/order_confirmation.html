@@ -1,0 +1,15 @@
+<h2>Дякуємо за замовлення!</h2>
+<p><strong>ПІБ:</strong> {{ order.full_name }}</p>
+<p><strong>Адреса:</strong> {{ order.address }}</p>
+<p><strong>Телефон:</strong> {{ order.phone }}</p>
+<p><strong>Спосіб оплати:</strong> {{ order.get_payment_method_display }}</p>
+
+<h3>Замовлені страви:</h3>
+<ul>
+    {% for item in order.items.all %}
+        <li>{{ item.dish.name }} — {{ item.quantity }} x {{ item.price }} грн = {{ item.total_price }} грн</li>
+    {% endfor %}
+</ul>
+
+<h3>Загальна сума: {{ order.total_price }} грн</h3>
+<a href="{% url 'dish_list' %}">Назад до каталогу</a>

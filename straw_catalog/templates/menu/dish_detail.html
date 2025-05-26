@@ -11,3 +11,14 @@
     {% csrf_token %}
     <button type="submit">Додати до кошика</button>
 </form>
+
+<h3>Середній рейтинг: {{ dish.reviews.all|dictsort:"-created_at"|yesno:"Немає оцінок" }}</h3>
+
+<ul>
+  {% for review in dish.reviews.all %}
+    {% if review.is_approved %}
+      <li><strong>{{ review.rating }}⭐</strong> — {{ review.comment }} <i>від {{ review.user.username }}</i></li>
+    {% endif %}
+  {% endfor %}
+</ul>
+<a href="{% url 'reviews:add_review' dish.id %}">Залишити відгук</a>

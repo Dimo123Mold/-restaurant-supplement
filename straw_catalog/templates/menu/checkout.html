@@ -1,0 +1,8 @@
+<h2>Оформлення замовлення</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h3>Сума до оплати: {{ cart.total_price }} грн</h3>
+    <button type="submit">Підтвердити замовлення</button>
+</form>

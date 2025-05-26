@@ -1,0 +1,6 @@
+<h2>Залишити відгук про {{ dish.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зберегти</button>
+</form>

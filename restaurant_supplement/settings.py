@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'straw_catalog',
+    'orders',
+    'reviews'
 ]
 
 MIDDLEWARE = [

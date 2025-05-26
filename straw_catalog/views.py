@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Dish, Category, Cart, CartItem
+from .models import Dish, Category, Cart, CartItem, Order, OrderItem
 from accounts.models import CustomUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -75,3 +75,41 @@ def update_quantity(request, item_id):
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     return render(request, 'menu/cart.html', {'cart': cart})
+
+
+from .forms import OrderForm
+from .models import CartItem, Order, OrderItem
+
+@login_required
+def checkout(request):
+    cart = get_object_or_404(Cart, user=request.user)
+
+    if not cart.items.exists():
+        return redirect('view_cart')
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
+
+            for item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    dish=item.dish,
+                    quantity=item.quantity,
+                    price=item.dish.price,
+                )
+            cart.items.all().delete()
+            return redirect('order_confirmation', order_id=order.id)
+    else:
+        form = OrderForm()
+
+    return render(request, 'menu/checkout.html', {'form': form, 'cart': cart})
+
+
+@login_required
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'menu/order_confirmation.html', {'order': order})
