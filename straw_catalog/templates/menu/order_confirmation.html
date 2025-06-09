@@ -1,15 +1,118 @@
-<h2>Дякуємо за замовлення!</h2>
-<p><strong>ПІБ:</strong> {{ order.full_name }}</p>
-<p><strong>Адреса:</strong> {{ order.address }}</p>
-<p><strong>Телефон:</strong> {{ order.phone }}</p>
-<p><strong>Спосіб оплати:</strong> {{ order.get_payment_method_display }}</p>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Подяка за замовлення — Козацька кухня</title>
+    <style>
+        body {
+            background-color: #fffaf0;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<h3>Замовлені страви:</h3>
-<ul>
-    {% for item in order.items.all %}
-        <li>{{ item.dish.name }} — {{ item.quantity }} x {{ item.price }} грн = {{ item.total_price }} грн</li>
-    {% endfor %}
-</ul>
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
 
-<h3>Загальна сума: {{ order.total_price }} грн</h3>
-<a href="{% url 'dish_list' %}">Назад до каталогу</a>
+        header h1 {
+            font-size: 30px;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff8dc;
+            padding: 30px;
+            border: 2px solid #deb887;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #006400;
+            font-size: 26px;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            color: #8b0000;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #fffaf0;
+            border: 1px dashed #a0522d;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #006400;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            background-color: #8b0000;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        a:hover {
+            background-color: #a52a2a;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Слава замовленню!</h1>
+</header>
+
+<div class="container">
+    <h2>Дякуємо за замовлення, козаче!</h2>
+
+    <p><strong>ПІБ:</strong> {{ order.full_name }}</p>
+    <p><strong>Адреса:</strong> {{ order.address }}</p>
+    <p><strong>Телефон:</strong> {{ order.phone }}</p>
+    <p><strong>Спосіб оплати:</strong> {{ order.get_payment_method_display }}</p>
+
+    <h3>Замовлені страви:</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.dish.name }} — {{ item.quantity }} x {{ item.price }} грн = {{ item.total_price }} грн</li>
+        {% endfor %}
+    </ul>
+
+    <h3 class="total-price">Загальна сума: {{ order.total_price }} грн</h3>
+
+    <a href="{% url 'dish_list' %}">🔙 Назад до каталогу</a>
+</div>
+</body>
+</html>
