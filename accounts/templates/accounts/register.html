@@ -1,15 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-    <title>Register</title>
+    <meta charset="UTF-8">
+    <title>Реєстрація — Козацьких забав</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            background-color: #fdf6e3;
+            color: #3e2c1c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-container {
+            background-color: #fff8dc;
+            border: 2px solid #8b0000;
+            padding: 40px;
+            border-radius: 10px;
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #8b0000;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #8b0000;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #8b0000;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>Register</h2>
+<div class="auth-container">
+    <h2>Реєстрація Козака</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
+        <button type="submit">Зареєструватись</button>
     </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    <a href="{% url 'login' %}">Уже маєш акаунт? Увійти</a>
+</div>
 </body>
 </html>

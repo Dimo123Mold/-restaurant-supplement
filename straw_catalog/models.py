@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -14,7 +15,8 @@ class Dish(models.Model):
     photo = models.ImageField(upload_to='dishes/', blank=True, null=True)
     available = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='dishes')
-
+    created_at = models.DateTimeField(default=timezone.now)
+    rating = models.FloatField(default=0)
     def __str__(self):
         return self.name
 

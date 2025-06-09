@@ -25,6 +25,7 @@ urlpatterns = [
     path('straw_catalog/', include('straw_catalog.urls')),
     path('orders/', include('orders.urls')),
     path('reviews/', include('reviews.urls')),
+path('', include('main.urls')),
 
 ]
 

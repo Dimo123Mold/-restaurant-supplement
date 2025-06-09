@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'accounts',
     'straw_catalog',
     'orders',
-    'reviews'
+    'reviews',
+    'main',
 ]
 
 MIDDLEWARE = [
