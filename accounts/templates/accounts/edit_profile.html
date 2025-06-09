@@ -1,15 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-    <title>Edit Profile</title>
+    <meta charset="UTF-8">
+    <title>Редагування Профілю</title>
+    <style>
+        body {
+            background-color: #fffaf0;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #a0522d;
+        }
+
+        header h1 {
+            margin: 10px 0 0;
+            font-size: 30px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .coat-of-arms {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fff8dc;
+            padding: 30px;
+            border: 2px solid #deb887;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #8b0000;
+            font-size: 26px;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 5px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a52a2a;
+        }
+
+        a {
+            text-decoration: none;
+            background-color: #8b0000;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #a52a2a;
+        }
+    </style>
 </head>
 <body>
-    <h2>Edit Profile</h2>
+<header>
+    <h1>Редагування Профілю</h1>
+</header>
+
+<div class="container">
+    <h2>Внесіть зміни</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save changes</button>
+        <button type="submit">Зберегти зміни</button>
     </form>
-    <p><a href="{% url 'profile' %}">Back to Profile</a></p>
+    <a href="{% url 'profile' %}">⬅ Назад до профілю</a>
+</div>
 </body>
 </html>

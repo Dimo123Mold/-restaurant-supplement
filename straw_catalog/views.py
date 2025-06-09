@@ -17,12 +17,16 @@ def dish_detail(request, pk):
 def dish_list(request, category_id=None):
     categories = Category.objects.all()
     dishes = Dish.objects.all()
+    selected_category = None
+
+    query = request.GET.get('q')
+
+    if query:
+        dishes = dishes.filter(name__icontains=query)
 
     if category_id:
         selected_category = get_object_or_404(Category, id=category_id)
         dishes = dishes.filter(category=selected_category)
-    else:
-        selected_category = None
 
     context = {
         'categories': categories,
@@ -30,7 +34,6 @@ def dish_list(request, category_id=None):
         'selected_category': selected_category,
     }
     return render(request, 'menu/dish_list.html', context)
-
 
 @receiver(post_save, sender=CustomUser)
 def create_cart_for_user(sender, instance, created, **kwargs):
@@ -42,13 +45,17 @@ def create_cart_for_user(sender, instance, created, **kwargs):
 @login_required
 def add_to_cart(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
-    cart, created = Cart.objects.get_or_create(user=request.user)
-    item, created = CartItem.objects.get_or_create(cart=cart, dish=dish)
+    cart = request.user.cart
 
-    if not created:
+    item = CartItem.objects.filter(cart=cart, dish=dish).first()
+
+    if item:
         item.quantity += 1
-    item.save()
-    return redirect('view_cart')
+        item.save()
+    else:
+        CartItem.objects.create(cart=cart, dish=dish, quantity=1)
+
+    return redirect('dish_detail', pk=dish.id)
 
 
 @login_required

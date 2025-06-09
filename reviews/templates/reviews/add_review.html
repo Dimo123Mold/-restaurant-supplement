@@ -1,6 +1,112 @@
-<h2>Залишити відгук про {{ dish.name }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зберегти</button>
-</form>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Відгук — {{ dish.name }}</title>
+    <style>
+        body {
+            background-color: #fff8dc;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #a0522d;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: #fffbf0;
+            padding: 30px;
+            border: 2px solid #deb887;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #8b0000;
+            font-size: 28px;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #5a2d0c;
+        }
+
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 2px solid #a0522d;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 16px;
+            background-color: #fffaf0;
+        }
+
+        button {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            margin-top: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a52a2a;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+         .cart-button-top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color:  white;
+            background-color: #8b0000 ;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Козацький відгук</h1>
+</header>
+
+<div class="container">
+    <h2>Залишити відгук про "{{ dish.name }}"</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <a href="{% url 'dish_detail' dish.id %}" class="back-link">← Назад до страви</a>
+     <a href="{% url 'home' %}" class="btn cart-button-top-right">На головну сторінку</a>
+</div>
+</body>
+</html>

@@ -4,6 +4,7 @@ from .models import Review
 from .forms import ReviewForm
 from straw_catalog.models import Dish
 
+
 @login_required
 def add_review(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
@@ -18,3 +19,4 @@ def add_review(request, dish_id):
     else:
         form = ReviewForm()
     return render(request, 'reviews/add_review.html', {'form': form, 'dish': dish})
+

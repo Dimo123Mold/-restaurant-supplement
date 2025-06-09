@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Avg
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -17,6 +18,10 @@ class Dish(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='dishes')
     created_at = models.DateTimeField(default=timezone.now)
     rating = models.FloatField(default=0)
+    @property
+    def average_rating(self):
+        avg = self.reviews.filter(is_approved=True).aggregate(avg=Avg('rating'))['avg']
+        return round(avg, 1) if avg is not None else 0
     def __str__(self):
         return self.name
 

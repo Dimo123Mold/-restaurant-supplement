@@ -1,24 +1,159 @@
-<h1>{{ dish.name }}</h1>
-<p>{{ dish.description }}</p>
-<p><strong>Інгредієнти:</strong> {{ dish.ingredients }}</p>
-<p><strong>Ціна:</strong> {{ dish.price }} грн</p>
-{% if dish.photo %}
-    <img src="{{ dish.photo.url }}" alt="{{ dish.name }}" width="300">
-{% endif %}
-<p><strong>Наявність:</strong> {{ dish.available|yesno:"Є,Немає" }}</p>
-<a href="{% url 'dish_list' %}">Назад до каталогу</a>
-<form method="post" action="{% url 'add_to_cart' dish.id %}">
-    {% csrf_token %}
-    <button type="submit">Додати до кошика</button>
-</form>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ dish.name }} — Козацька страва</title>
+    <style>
+        body {
+            background-color: #fff8dc;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<h3>Середній рейтинг: {{ dish.reviews.all|dictsort:"-created_at"|yesno:"Немає оцінок" }}</h3>
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #a0522d;
+        }
 
-<ul>
-  {% for review in dish.reviews.all %}
-    {% if review.is_approved %}
-      <li><strong>{{ review.rating }}⭐</strong> — {{ review.comment }} <i>від {{ review.user.username }}</i></li>
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #fffbf0;
+            padding: 30px;
+            border: 2px solid #deb887;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: while;
+            font-size: 32px;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 10px;
+        }
+
+        img {
+            border: 4px solid #8b0000;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .rating {
+            color: #daa520;
+            font-size: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #fffaf0;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px dashed #a0522d;
+            border-radius: 8px;
+        }
+
+        .btn {
+            background-color: #8b0000;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #a52a2a;
+        }
+
+        .back-link, .review-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #8b0000;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+
+        .back-link:hover, .review-link:hover {
+            text-decoration: underline;
+        }
+        .cart-button-top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color:  #8b0000;
+            background-color: White;
+        }
+
+        .container-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>{{ dish.name }}</h1>
+</header>
+
+<div class="container">
+    <p>{{ dish.description }}</p>
+    <p><strong>Інгредієнти:</strong> {{ dish.ingredients }}</p>
+    <p><strong>Ціна:</strong> {{ dish.price }} грн</p>
+
+    {% if dish.photo %}
+        <img src="{{ dish.photo.url }}" alt="{{ dish.name }}" width="300">
     {% endif %}
-  {% endfor %}
-</ul>
-<a href="{% url 'reviews:add_review' dish.id %}">Залишити відгук</a>
+
+    <p><strong>Наявність:</strong> {{ dish.available|yesno:"Є,Немає" }}</p>
+
+    <form method="post" action="{% url 'add_to_cart' dish.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Додати до кошика</button>
+    </form>
+
+    <p><strong>Середній рейтинг:</strong>
+       <span class="rating">
+       {% if dish.average_rating > 0 %}
+           {{ dish.average_rating }}⭐
+       {% else %}
+           Ще немає оцінок
+       {% endif %}
+       </span>
+    </p>
+
+    <h3>Відгуки козаків:</h3>
+    <ul>
+      {% for review in dish.reviews.all %}
+        {% if review.is_approved %}
+          <li>
+              <strong class="rating">{{ review.rating }}⭐</strong> — {{ review.comment|default:"(без коментаря)" }} <br>
+              <i>від {{ review.user.username }}</i>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <a href="{% url 'reviews:add_review' dish.id %}" class="review-link">Залишити відгук</a><br>
+    <a href="{% url 'dish_list' %}" class="back-link">← Назад до каталогу</a>
+    <a href="{% url 'view_cart' %}" class="btn cart-button-top-right">Кошик 🛒</a>
+</div>
+
+
+
+
+</body>
+</html>

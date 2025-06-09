@@ -1,17 +1,129 @@
-<h2>Історія замовлень</h2>
-{% for order in orders %}
-    <div>
-        <strong>Замовлення №{{ order.id }}</strong> — {{ order.created_at }}
-        <ul>
-        {% for item in order.items.all %}
-            <li>{{ item.dish.name }} — {{ item.quantity }} шт. ({{ item.total_price }} грн)</li>
-        {% endfor %}
-        </ul>
-        <form method="post" action="{% url 'orders:repeat_order' order.id %}">
-            {% csrf_token %}
-            <button type="submit">Повторити замовлення</button>
-        </form>
-    </div>
-{% empty %}
-    <p>Немає попередніх замовлень.</p>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Історія замовлень</title>
+    <style>
+        body {
+            background-color: #fffaf0;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 3px solid #a0522d;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff8dc;
+            padding: 30px;
+            border: 2px solid #deb887;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #8b0000;
+            font-size: 28px;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 8px;
+        }
+
+        .order {
+            background-color: #fffaf0;
+            border: 2px dashed #a0522d;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .order strong {
+            color: #8b0000;
+            font-size: 18px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #a52a2a;
+        }
+
+        .empty {
+            font-size: 18px;
+            color: #555;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .cart-button-top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color:  white;
+            background-color: #8b0000 ;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Козацька Історія Замовлень</h1>
+</header>
+
+<div class="container">
+    <h2>Ваші минулі наїдки</h2>
+
+    {% for order in orders %}
+        <div class="order">
+            <strong>Замовлення №{{ order.id }}</strong> — {{ order.created_at|date:"d.m.Y H:i" }}
+            <ul>
+                {% for item in order.items.all %}
+                    <li>{{ item.dish.name }} — {{ item.quantity }} шт. ({{ item.total_price }} грн)</li>
+                {% endfor %}
+            </ul>
+            <form method="post" action="{% url 'orders:repeat_order' order.id %}">
+                {% csrf_token %}
+                <button type="submit">Повторити замовлення</button>
+            </form>
+        </div>
+    {% empty %}
+        <p class="empty">Немає попередніх замовлень, козаче!</p>
+    {% endfor %}
+     <a href="{% url 'home' %}" class="btn cart-button-top-right">На головну сторінку</a>
+</div>
+</body>
+</html>

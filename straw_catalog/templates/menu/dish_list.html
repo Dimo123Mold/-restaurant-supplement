@@ -1,31 +1,206 @@
-<h2>Категорії:</h2>
-<ul>
-    <li><a href="{% url 'dish_list' %}">Усі</a></li>
-    {% for category in categories %}
-        <li>
-            <a href="{% url 'dish_by_category' category.id %}">
-                {% if selected_category and selected_category.id == category.id %}
-                    <strong>{{ category.name }}</strong>
-                {% else %}
-                    {{ category.name }}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню — Козацька кухня</title>
+    <style>
+        body {
+            background-color: #fffaf0;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            font-size: 34px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff8dc;
+            border: 3px solid #a0522d;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+
+        h2 {
+            color: #8b0000;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 5px;
+            font-size: 26px;
+        }
+
+        ul.categories, ul.dishes {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.categories li {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        ul.categories a {
+            text-decoration: none;
+            color: #8b0000;
+            font-weight: bold;
+            padding: 6px 12px;
+            border: 2px solid #8b0000;
+            border-radius: 8px;
+            background-color: #fffaf0;
+        }
+
+        ul.categories a:hover,
+        ul.categories strong {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .dish-card {
+            border: 2px solid #a0522d;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fefbd8;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .dish-card img {
+            float: right;
+            margin-left: 20px;
+            border-radius: 8px;
+            border: 2px solid #deb887;
+        }
+
+        .dish-card h3 {
+            margin: 0;
+            font-size: 22px;
+            color: #8b0000;
+        }
+
+        .dish-card p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .availability {
+            font-weight: bold;
+            color: green;
+        }
+
+        .not-available {
+            color: red;
+        }
+
+        .search-bar {
+            margin: 20px 0;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border-radius: 6px;
+            border: 1px solid #8b0000;
+        }
+
+        .search-bar button {
+            padding: 8px 14px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #a52a2a;
+        }
+
+        .rating {
+            color: #daa520;
+            font-size: 18px;
+        }
+        .cart-button-top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color:  white;
+            background-color: #8b0000 ;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Козацьке меню</h1>
+</header>
+
+<div class="container">
+    <div class="search-bar">
+        <form method="get" action="">
+            <input type="text" name="q" placeholder="Пошук страви...">
+            <button type="submit">🔍 Шукати</button>
+        </form>
+    </div>
+
+    <h2>Категорії:</h2>
+    <ul class="categories">
+        <li><a href="{% url 'dish_list' %}">Усі</a></li>
+        {% for category in categories %}
+            <li>
+                <a href="{% url 'dish_by_category' category.id %}">
+                    {% if selected_category and selected_category.id == category.id %}
+                        <strong>{{ category.name }}</strong>
+                    {% else %}
+                        {{ category.name }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>Страви:</h2>
+    <ul class="dishes">
+        {% for dish in dishes %}
+            <li class="dish-card">
+                {% if dish.image %}
+                    <img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="160">
                 {% endif %}
-            </a>
-        </li>
-    {% endfor %}
-</ul>
-
-<hr>
-
-<h2>Страви:</h2>
-<ul>
-    {% for dish in dishes %}
-        <li>
-            <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a> — {{ dish.price }} грн
-            <p>{{ dish.description }}</p>
-            <p>Наявність: {% if dish.available %}✅{% else %}❌{% endif %}</p>
-            {% if dish.image %}
-                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="150">
-            {% endif %}
-        </li>
-    {% endfor %}
-</ul>
+                <h3>
+                    <a href="{% url 'dish_detail' dish.pk %}" style="color: #8b0000; text-decoration: none;">
+                        {{ dish.name }}
+                    </a>
+                </h3>
+                <p><strong>Ціна:</strong> {{ dish.price }} грн</p>
+                <p><strong>Опис:</strong> {{ dish.description }}</p>
+                <p class="{% if dish.available %}availability{% else %}not-available{% endif %}">
+                    Наявність: {% if dish.available %}✅ В наявності{% else %}❌ Немає{% endif %}
+                </p>
+                <p><strong>Середній рейтинг:</strong>
+                       <span class="rating">
+                       {% if dish.average_rating > 0 %}
+                           {{ dish.average_rating }}⭐
+                       {% else %}
+                           Ще немає оцінок
+                       {% endif %}
+                       </span>
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'home' %}" class="btn cart-button-top-right">На головну сторінку</a>
+</div>
+</body>
+</html>
