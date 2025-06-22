@@ -90,10 +90,9 @@
         }
         .cart-button-top-right {
             position: absolute;
-            top: 20px;
+            top: -10px;
             right: 20px;
             color:  white;
-            background-color: #8b0000 ;
         }
     </style>
 </head>
@@ -120,7 +119,7 @@
     <h3 class="total-price">Загальна сума: {{ order.total_price }} грн</h3>
 
     <a href="{% url 'dish_list' %}">🔙 Назад до каталогу</a>
-     <a href="{% url 'home' %}" class="btn cart-button-top-right">На головну сторінку</a>
+    <a href="{% url 'home' %}" class="btn cart-button-top-right">На головну сторінку</a>
 </div>
 </body>
 </html>
